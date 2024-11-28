@@ -1,0 +1,28 @@
+trigger:
+- none
+ 
+pool:
+  vmImage: 'windows-latest'
+ 
+variables:
+  - group: Test PBI File
+  - name: PBI_FILE_PATH
+    value: '$(Build.SourcesDirectory)\$(reportfile)'
+ 
+steps:
+- task: PowerShell@2
+  inputs:
+    targetType: 'filePath'
+    filePath: './Pipeline_final.ps1'
+    arguments: |
+      -workspacename $(workspacename) `
+      -reportName $(reportname) `
+      -clientId $(clientid) `
+      -clientSecret $(clientsecret) `
+      -SQLserver $(sqlserver) `
+      -SQLdb $(sqldb) `
+      -tenantId $(tenantid) `
+      -filepath $(PBI_FILE_PATH)
+  displayName: 'Publish Power BI Report'
+ 
+
